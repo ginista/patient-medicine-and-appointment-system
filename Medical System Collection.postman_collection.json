@@ -1,0 +1,334 @@
+{
+	"info": {
+		"_postman_id": "a5d82ca0-0547-4161-988f-71fd7e179fc9",
+		"name": "Medical System Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15980110"
+	},
+	"item": [
+		{
+			"name": "Register New User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"John Doe\",\r\n  \"email\": \"johndoe@example.com\",\r\n  \"password\": \"password123\",\r\n  \"roles\": [\"ROLE_USER\"],\r\n  \"patient\": {\r\n    \"name\": \"John Doe\",\r\n    \"gender\": \"Male\",\r\n    \"bloodGroup\": \"O+\",\r\n    \"contactNumber\": \"1234567890\",\r\n    \"age\": 30,\r\n    \"address\": \"123 Main Street\"\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"John Doe\",\r\n    \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/generateToken",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"generateToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Available Slots",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/appointment/available?date=2024-04-02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"available"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2024-04-02"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Appointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"consultationId\": 1,\n  \"problem\": \"Headache\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/appointment/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment",
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Appointments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/appointment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"appointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-prescription",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appointmentId\": 1,\r\n    \"doctorId\": 1,\r\n    \"medicationRequests\": [\r\n        {\r\n            \"medicationName\": \"Medicine A\",\r\n            \"dosage\": \"500mg\",\r\n            \"frequency\": \"Twice daily\",\r\n            \"instructions\": \"After meals\",\r\n            \"noOfDays\": 7\r\n        },\r\n        {\r\n            \"medicationName\": \"Medicine B\",\r\n            \"dosage\": \"250mg\",\r\n            \"frequency\": \"Once daily\",\r\n            \"instructions\": \"Before sleep\",\r\n            \"noOfDays\": 10\r\n        }\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prescriptions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prescriptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-prescription",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "add-Medication",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicationName\": \"Aspirin\",\r\n    \"dosage\": \"500mg\",\r\n    \"frequency\": \"Twice daily\",\r\n    \"instructions\": \"After meals\",\r\n    \"noOfDays\": 7\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prescriptions/1/medications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prescriptions",
+						"1",
+						"medications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-medication",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"medicationName\": \"Medicine B\",\r\n    \"dosage\": \"250mg\",\r\n    \"frequency\": \"Once daily\",\r\n    \"instructions\": \"Before meals\",\r\n    \"noOfDays\": 10\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/prescriptions/1/medications/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prescriptions",
+						"1",
+						"medications",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-medication",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// Define the request details for generating a token\r",
+					"const tokenRequest = {\r",
+					"    method: 'POST',\r",
+					"    url: 'http://localhost:8080/auth/generateToken',\r",
+					"    header: {\r",
+					"        'Content-Type': 'application/json'\r",
+					"    },\r",
+					"    body: {\r",
+					"        mode: 'raw',\r",
+					"        raw: JSON.stringify({\r",
+					"            \"userName\": \"John Doe\",\r",
+					"            \"password\": \"password123\"\r",
+					"        })\r",
+					"    }\r",
+					"};\r",
+					"\r",
+					"// Send the token request and extract the token from the response\r",
+					"pm.sendRequest(tokenRequest, function (err, response) {\r",
+					"    if (err) {\r",
+					"        console.error('Error:', err);\r",
+					"    } else {\r",
+					"        const responseBody = response.text();\r",
+					"        console.info(responseBody)\r",
+					"        if (responseBody) {\r",
+					"            pm.environment.set('accessToken', responseBody);\r",
+					"        } else {\r",
+					"            console.error('Token not found in response');\r",
+					"        }\r",
+					"    }\r",
+					"});\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
