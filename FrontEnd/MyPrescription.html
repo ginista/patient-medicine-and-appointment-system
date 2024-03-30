@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Management</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="./login.html">ABC Hospital</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="./viewAvailableAppointments.html">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./PatientAppointmentHistory.html">My Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./MyPrescription.html">My Prescriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./login.html">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Add Medication</h2>
+        <form id="medicationForm">
+            <input type="hidden" id="prescriptionId">
+            <input type="hidden" id="medicationId">
+            <div class="form-group">
+                <label for="medicationName">Medication Name:</label>
+                <input type="text" class="form-control" id="medicationName" placeholder="Enter Medication Name" required>
+            </div>
+            <div class="form-group">
+                <label for="dosage">Dosage:</label>
+                <input type="text" class="form-control" id="dosage" placeholder="Enter Dosage" required>
+            </div>
+            <div class="form-group">
+                <label for="frequency">Frequency:</label>
+                <input type="text" class="form-control" id="frequency" placeholder="Enter Frequency" required>
+            </div>
+            <div class="form-group">
+                <label for="instructions">Instructions:</label>
+                <input type="text" class="form-control" id="instructions" placeholder="Enter Instructions" required>
+            </div>
+            <div class="form-group">
+                <label for="noOfDays">No. of Days:</label>
+                <input type="number" class="form-control" id="noOfDays" placeholder="Enter No. of Days" required>
+            </div>
+            <button type="submit" id="submitButton" class="btn btn-primary">Add Medication</button>
+        </form>
+        
+        <br>
+        <hr>
+        
+        <div class="medication-list">
+            <h2>Medications</h2>
+            <table id="medications">
+                <thead>
+                    <tr>
+                        <th>Doctor Name</th>
+                        <th>Patient Name</th>
+                        <th>Medication Name</th>
+                        <th>Dosage</th>
+                        <th>Frequency</th>
+                        <th>Instructions</th>
+                        <th>No. of days</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="employees"></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

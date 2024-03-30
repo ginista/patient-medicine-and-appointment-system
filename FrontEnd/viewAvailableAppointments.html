@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Available Appointments</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="./login.html">ABC Hospital</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="./viewAvailableAppointments.html">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./PatientAppointmentHistory.html">My Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./MyPrescription.html">My Prescriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./login.html">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div class="container mt-5">
+    <h2 class="mb-4">View Available Appointments</h2>
+    <form>
+        <div class="form-group">
+            <label for="appointmentDate">Select Date:</label>
+            <input type="date" class="form-control form-control-sm" id="appointmentDate">
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="viewAppointments()">View Available Appointments</button>
+    </form>
+    <div id="availableAppointments" class="mt-4"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    async function viewAppointments() {
+        var selectedDate = document.getElementById("appointmentDate").value;
+
+        try {
+            // Retrieve JWT token from local storage
+            const token = localStorage.getItem('token');
+
+            // Check if token exists
+            if (!token) {
+                throw new Error('JWT token not found in local storage');
+            }
+
+            // Fetch appointment data using Axios
+            const response = await axios.get(`http://localhost:8080/appointment/available?date=${selectedDate}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            // Process the response data
+            const appointments = response.data;
+            displayAppointments(appointments);
+        } catch (error) {
+            console.error('Error fetching appointments:', error.message);
+            // Display an error message to the user
+            document.getElementById("availableAppointments").innerHTML = "<p>Error fetching appointments. Please try again later.</p>";
+        }
+    }
+
+    function displayAppointments(appointments) {
+        var appointmentsHtml = "<h4>Available Appointments</h4>";
+
+        if (appointments.length > 0) {
+            appointments.forEach(appointment => {
+                // Format appointment time
+                var fromTime = appointment.fromTime.substring(0, 5);
+                var toTime = appointment.toTime.substring(0, 5);
+                var timeRange = fromTime + " - " + toTime;
+
+                // Construct HTML for each appointment
+                var appointmentInfo = `
+                    <p>Doctor: ${appointment.doctorName}</p>
+                    <p>Specialization: ${appointment.doctorSpecialization}</p>
+                    <p>Time: ${timeRange}</p>
+                    <p>Consultation Charge: $${appointment.consultationCharge}</p>
+                    <p>Total Tokens: ${appointment.totalTokens}</p>
+                    <p>Available Tokens: ${appointment.availableTokens}</p>
+                    <p>Last Booked Token Number: ${appointment.lastBookedTokenNumber}</p>
+                    <button class="btn btn-primary" onclick="bookAppointment(${appointment.consultationId})">Book</button>
+                    <hr>
+                `;
+
+                appointmentsHtml += appointmentInfo;
+            });
+        } else {
+            appointmentsHtml += "<p>No appointments available for the selected date.</p>";
+        }
+
+        document.getElementById("availableAppointments").innerHTML = appointmentsHtml;
+    }
+
+    async function bookAppointment(consultationId) {
+        var problem = prompt("Please enter your problem:");
+        if (problem) {
+            try {
+                // Retrieve JWT token from local storage
+                const token = localStorage.getItem('token');
+
+                // Check if token exists
+                if (!token) {
+                    throw new Error('JWT token not found in local storage');
+                }
+
+                // Book appointment using Axios
+                const response = await axios.post('http://localhost:8080/appointment/book', {
+                    consultationId: consultationId,
+                    problem: problem
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // Log success message
+                console.log('Appointment booked successfully:', response.data);
+                // Display a success message to the user
+                alert('Appointment booked successfully!');
+                window.location.href = './PatientAppointmentHistory.html'
+            } catch (error) {
+                console.error('Error booking appointment:', error.message);
+                // Display an error message to the user
+                alert('Error booking appointment. Please try again later.');
+            }
+        }
+    }
+</script>
+
+
+</body>
+</html>

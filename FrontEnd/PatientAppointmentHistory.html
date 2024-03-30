@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="./login.html">ABC Hospital</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="./viewAvailableAppointments.html">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./PatientAppointmentHistory.html">My Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./MyPrescription.html">My Prescriptions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./login.html">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div class="container mt-5">
+    <h2 class="mb-4">My Appointments</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Appointment ID</th>
+            <th>Doctor</th>
+            <th>Problem</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody id="appointmentTableBody">
+        <!-- Table body will be populated dynamically -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    async function fetchAppointments() {
+        try {
+            // Retrieve JWT token from local storage
+            const token = localStorage.getItem('token');
+
+            // Check if token exists
+            if (!token) {
+                throw new Error('JWT token not found in local storage');
+            }
+
+            // Fetch appointment data using Axios with JWT token in headers
+            const response = await axios.get('http://localhost:8080/appointment', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            // Process the response data
+            const appointments = response.data;
+            displayAppointments(appointments);
+        } catch (error) {
+            console.error('Error fetching appointments:', error.message);
+            // Display an error message to the user
+            alert('Error fetching appointments. Please try again later.');
+        }
+    }
+
+    function displayAppointments(appointments) {
+        const tableBody = document.getElementById('appointmentTableBody');
+
+        // Clear existing table data
+        tableBody.innerHTML = '';
+
+        // Loop through each appointment and create table rows
+        appointments.forEach(appointment => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${appointment.appointmentId}</td>
+                <td>${appointment.doctorName}</td>
+                <td>${appointment.problem}</td>
+                <td>${appointment.slotDate}</td>
+                <td>${appointment.appointmentStatus}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Call the function to fetch and display appointments when the page loads
+    fetchAppointments();
+</script>
+
+</body>
+</html>
